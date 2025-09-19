@@ -55,7 +55,7 @@ if [[ "$SOURCE_AUTO_BRIGHTNESS_TYPE" != "$TARGET_AUTO_BRIGHTNESS_TYPE" && "$TARG
     # WORKAROUND: Skip failure on CALIBRATEDLUX
     # mov this,0x1 -> mov this,0x0
     if [[ "$TARGET_AUTO_BRIGHTNESS_TYPE" == "3" ]]; then
-        HEX_PATCH "$WORK_DIR/system/system/lib64/libsensorservice.so" "07 4B 00 94 20 00 80 52" "07 4B 00 94 00 00 80 52"
+        HEX_PATCH "$WORK_DIR/system/system/lib64/libsensorservice.so" "074B009420008052" "074B009400008052"
     fi
     LOG_STEP_OUT
 fi
@@ -66,7 +66,6 @@ if [[ "$SOURCE_FP_SENSOR_CONFIG" != "$TARGET_FP_SENSOR_CONFIG" ]]; then
     DECODE_APK "system" "system/framework/framework.jar"
     DECODE_APK "system" "system/framework/services.jar"
     DECODE_APK "system" "system/priv-app/SecSettings/SecSettings.apk"
-    DECODE_APK "system" "system/priv-app/BiometricSetting/BiometricSetting.apk"
     DECODE_APK "system_ext" "priv-app/SystemUI/SystemUI.apk"
 
     FTP="
@@ -83,6 +82,7 @@ if [[ "$SOURCE_FP_SENSOR_CONFIG" != "$TARGET_FP_SENSOR_CONFIG" ]]; then
     done
 
     if [[ "$(GET_FP_SENSOR_TYPE "$TARGET_FP_SENSOR_CONFIG")" == "ultrasonic" ]]; then
+        DECODE_APK "system" "system/priv-app/BiometricSetting/BiometricSetting.apk"
         #ADD_TO_WORK_DIR "e1sxxx" "system" "system/bin/surfaceflinger"
         #ADD_TO_WORK_DIR "e1sxxx" "system" "system/lib64/libgui.so"
         #ADD_TO_WORK_DIR "e1sxxx" "system" "system/lib64/libui.so"
